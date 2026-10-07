@@ -40,9 +40,9 @@ async function readError(res: Response): Promise<string> {
 }
 
 export function FinanceProvider({ children }: { children: ReactNode }) {
-  const [data, setDataState] = useState<FinanceData>(emptyFinanceData);
+  const [data, setDataState] = useState<FinanceData>(() => emptyFinanceData());
   const [sha, setSha] = useState<string | null>(null);
-  const [status, setStatus] = useState<Status>("idle");
+  const [status, setStatus] = useState<Status>("loading");
   const [error, setError] = useState<string | null>(null);
   const [dirty, setDirty] = useState(false);
 
@@ -60,7 +60,7 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     setStatus("loading");
     setError(null);
     try {
-      const res = await fetch("/api/data");
+      const res = await fetch("/api/data", { cache: "no-store" });
       if (!res.ok) {
         setError(await readError(res));
         setStatus("error");
@@ -183,8 +183,38 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
   );
 
   useEffect(() => {
-    void load();
-  }, [load]);
+    let cancelled = false;
+    (async () => {
+      setStatus("loading");
+      setError(null);
+      try {
+        const res = await fetch("/api/data", { cache: "no-store" });
+        if (cancelled) return;
+        if (!res.ok) {
+          setError(await readError(res));
+          setStatus("error");
+          return;
+        }
+        const body = (await res.json()) as {
+          data: FinanceData;
+          sha: string | null;
+          generated?: boolean;
+        };
+        if (cancelled) return;
+        setDataState(body.data);
+        setSha(body.sha);
+        setDirty(Boolean(body.generated));
+        setStatus("ready");
+      } catch {
+        if (cancelled) return;
+        setError("Не удалось загрузить данные. Проверьте сеть и .env.local.");
+        setStatus("error");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const value = useMemo(
     () => ({

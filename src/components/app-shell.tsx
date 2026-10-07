@@ -150,7 +150,7 @@ export function AppShell() {
             </Alert>
           ) : null}
 
-          {status === "loading" ? (
+          {status === "loading" || status === "idle" ? (
             <div className="rounded-lg border border-dashed border-border bg-background/60 p-10 text-center text-muted-foreground">
               Загрузка данных из GitHub…
             </div>

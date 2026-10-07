@@ -1,9 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  // Local single-user data app: avoid experimental cache/PPR surprises with client fetch.
+  allowedDevOrigins: ["127.0.0.1", "localhost"],
   turbopack: {
     rules: {
       "*.css": {
