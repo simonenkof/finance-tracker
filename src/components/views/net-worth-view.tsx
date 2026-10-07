@@ -43,7 +43,7 @@ export function NetWorthView() {
   const [snapItem, setSnapItem] = useState<NetWorthItem | null>(null);
   const [name, setName] = useState("");
   const [kind, setKind] = useState<NetWorthKind>("asset");
-  const [snapDate, setSnapDate] = useState(todayISO());
+  const [snapDate, setSnapDate] = useState("");
   const [snapAmount, setSnapAmount] = useState("");
 
   const openCreate = () => {

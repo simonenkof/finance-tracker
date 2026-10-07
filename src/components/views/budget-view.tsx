@@ -38,7 +38,7 @@ export function BudgetView() {
   const progress = useMemo(() => allBudgetProgress(data), [data]);
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Budget | null>(null);
-  const [startDate, setStartDate] = useState(todayISO());
+  const [startDate, setStartDate] = useState("");
   const [duration, setDuration] = useState<BudgetDuration>("month");
   const [overallLimit, setOverallLimit] = useState("");
   const [catLimit, setCatLimit] = useState("");

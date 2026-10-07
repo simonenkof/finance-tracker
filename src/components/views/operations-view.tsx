@@ -63,7 +63,7 @@ function OrdinaryOps() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Operation | null>(null);
   const [type, setType] = useState<OperationType>("expense");
-  const [date, setDate] = useState(todayISO());
+  const [date, setDate] = useState("");
   const [amount, setAmount] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [comment, setComment] = useState("");
@@ -302,7 +302,7 @@ function RecurringOps() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<RecurringPayment | null>(null);
   const [period, setPeriod] = useState<RecurringPeriod>("month");
-  const [startDate, setStartDate] = useState(todayISO());
+  const [startDate, setStartDate] = useState("");
   const [amount, setAmount] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [comment, setComment] = useState("");

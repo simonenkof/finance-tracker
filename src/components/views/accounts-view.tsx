@@ -27,7 +27,7 @@ export function AccountsView() {
   const [editing, setEditing] = useState<Account | null>(null);
   const [snapAccount, setSnapAccount] = useState<Account | null>(null);
   const [name, setName] = useState("");
-  const [snapDate, setSnapDate] = useState(todayISO());
+  const [snapDate, setSnapDate] = useState("");
   const [snapAmount, setSnapAmount] = useState("");
 
   const openCreate = () => {

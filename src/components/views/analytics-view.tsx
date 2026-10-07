@@ -28,13 +28,14 @@ type FilterMode = "week" | "month" | "custom";
 export function AnalyticsView() {
   const { data } = useFinance();
   const [mode, setMode] = useState<FilterMode>("month");
-  const [customFrom, setCustomFrom] = useState(monthRange().from);
-  const [customTo, setCustomTo] = useState(monthRange().to);
+  const [customFrom, setCustomFrom] = useState("");
+  const [customTo, setCustomTo] = useState("");
 
   const range = useMemo(() => {
     if (mode === "week") return weekRange();
     if (mode === "month") return monthRange();
-    return { from: customFrom, to: customTo };
+    if (customFrom && customTo) return { from: customFrom, to: customTo };
+    return monthRange();
   }, [mode, customFrom, customTo]);
 
   const bars = useMemo(
@@ -67,7 +68,12 @@ export function AnalyticsView() {
         <Button
           size="sm"
           variant={mode === "custom" ? "default" : "outline"}
-          onClick={() => setMode("custom")}
+          onClick={() => {
+            const m = monthRange();
+            setCustomFrom((prev) => prev || m.from);
+            setCustomTo((prev) => prev || m.to);
+            setMode("custom");
+          }}
         >
           Диапазон
         </Button>
